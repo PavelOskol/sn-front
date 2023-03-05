@@ -1,7 +1,9 @@
 import head from "../head.jpg";
 import React from "react";
+import s from "./Head.module.css"
 
 export default function Header() {
-    return <header className="App-header">
-    <img src={head} alt="logo" />
-</header>};
+    return <header className={s.appHeader}>
+            <img src={head} alt="logo"/>
+    </header>
+};

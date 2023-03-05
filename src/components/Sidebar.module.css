@@ -1,0 +1,17 @@
+.sidebar {
+    background-color: bisque;
+    grid-area: sidebar;
+}
+
+.sidebar a {
+    text-align: -moz-center;
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+}
+
+.sidebar a:hover {
+    color: #f1f1f1;
+}
