@@ -1,7 +1,7 @@
 import React from "react";
-import s from "./Profile.module.css"
+import s from "./Post.module.css"
 
-export default function Profile() {
+export default function Post() {
     return <div className={s.content}>
         content
     </div>

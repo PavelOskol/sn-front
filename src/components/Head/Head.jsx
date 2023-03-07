@@ -1,4 +1,4 @@
-import head from "../head.jpg";
+import head from "../../head.jpg";
 import React from "react";
 import s from "./Head.module.css"
 
