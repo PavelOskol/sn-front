@@ -1,13 +1,14 @@
 import React from "react";
 import s from "./Sidebar.module.css"
+import {NavLink} from "react-router-dom";
 
 export default function Sidebar() {
     return <nav className={s.sidebar}>
-        <a href="/profile">Profile</a>
-        <a href="/messages">Messages</a>
-        <a href="/news">News</a>
+        <NavLink to="/profile" className={navData => navData.isActive ? s.active : s.sidebar}> Profile </NavLink>
+        <NavLink to="/messages" className={navData => navData.isActive ? s.active : s.sidebar}> Messages </NavLink>
+        <NavLink to="/news" className={navData => navData.isActive ? s.active : s.sidebar}>News</NavLink>
         <br/>
-        <a href="/music">Music</a>
+        <NavLink to="/music" className={navData => navData.isActive ? s.active : s.sidebar}>Music</NavLink>
         {/*<a href="src/components#music">Options</a>*/}
     </nav>
 }
