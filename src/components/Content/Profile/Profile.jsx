@@ -1,10 +1,11 @@
 import React from "react";
 import s from "./Profile.module.css"
 import MyPosts from "./MyPosts/MyPosts";
+import ProfileInfo from "./ProfileInfo/ProfileInfo";
 
 export default function Profile() {
     return <div className={s.content}>
-        My profile
-        <MyPosts />
+        <ProfileInfo/>
+        <MyPosts/>
     </div>
 }
