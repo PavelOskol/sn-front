@@ -10,12 +10,7 @@ export default function ProfileInfo() {
             <div className={s.ProfileBlock}>
                 <h1> My profile </h1>
             </div>
-            <div className={s.ProfileBlock}>
-                <textarea> New post</textarea>
-            </div>
-            <div className={s.ProfileBlock}>
-                <button>Add post</button>
-            </div>
+
         </div>
     )
 }

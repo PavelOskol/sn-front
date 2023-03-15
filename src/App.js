@@ -8,7 +8,7 @@ import News from "./components/Content/News/News";
 import Music from "./components/Content/Music/Music";
 
 
-function App() {
+function App(props) {
     return (
         <BrowserRouter>
             <div className="App">
@@ -16,9 +16,9 @@ function App() {
                 <Sidebar/>
 
                 <Routes>
-                    <Route path="/profile" element={<Profile/>}/>
-                    <Route path="/" element={<Profile/>}/>
-                    <Route path="/messages/*" element={<Messages/>}/>
+                    <Route path="/profile" element={<Profile state={props.state}/>}/>
+                    <Route path="/" element={<Profile state={props.state}/>}/>
+                    <Route path="/messages/*" element={<Messages DialogsPage={props.state.DialogsPage}/>}/>
                     <Route path="/news" element={<News/>}/>
                     <Route path="/music" element={<Music/>}/>
                     {/*<Route path="/messages" element={<Messages/>}/>*/}
