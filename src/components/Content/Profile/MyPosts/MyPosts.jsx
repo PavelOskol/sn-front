@@ -4,16 +4,18 @@ import Post from "./Post/Post";
 
 
 export default function MyPosts(props) {
-    const Posts = props.state.ProfilePage.posts.map(post => <Post message={post.message}/>)
     const newPost = React.createRef();
-    const addPost = () => props.state.addPost(newPost.current.value);
-    const textAreaClick = () => newPost.current.value =""
+    const Posts = props.ProfilePage.posts.map(post => <Post message={post.message}/>)
+    const addPost = () => props.ProfilePage.addPost();
+    const changeTextarea = () => props.ProfilePage.changeTextarea(newPost.current.value);
+    const textAreaClick = () => props.ProfilePage.changeTextarea("");
+
 
     return (
         <div className={s.content}>
             My posts
             <div className={s.ProfileBlock}>
-                <textarea ref={newPost} defaultValue={"New post"} onClick={textAreaClick}/>
+                <textarea ref={newPost} value={props.ProfilePage.currentPost} onClick={textAreaClick} onChange={changeTextarea}/>
             </div>
             <div className={s.ProfileBlock}>
                 <button onClick={addPost}>Add post</button>

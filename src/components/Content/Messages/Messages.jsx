@@ -17,10 +17,13 @@ const Message = (props) => {
     )
 }
 export default function Messages(props) {
+    const message = React.createRef();
     const dialogItems = props.DialogsPage.dialogItems.map(item => <DialogItem id={item.id} name={item.name}/>);
     const messages = props.DialogsPage.messages.map(message => <Message message={message.message}/>);
-    const message = React.createRef();
     const sendMessage = () => props.DialogsPage.addMessage(message.current.value);
+    const changeTextarea = () => props.DialogsPage.changeTextarea(message.current.value);
+
+
 
     return (
         <div className={s.dialogs}>
@@ -30,7 +33,7 @@ export default function Messages(props) {
             <div className={s.messages}>
                 {messages}
                 <div>
-                    <textarea ref={message} defaultValue={""} />
+                    <textarea ref={message} value={props.DialogsPage.currentText} onChange={changeTextarea} />
                 </div>
                 <div>
                     <button onClick={sendMessage}>Отправить мэссаге</button>

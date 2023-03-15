@@ -22,28 +22,46 @@ const messages = [
 const state = {
     ProfilePage:{
         posts,
+        currentPost: "New post",
+        changeTextarea: (text) => {
+            state.ProfilePage.currentPost = text;
+            render(state);
+        },
+        addPost : () => {
+            state.ProfilePage.posts.push(
+                {
+                    message: state.ProfilePage.currentPost
+                }
+            )
+            state.ProfilePage.currentPost = "New post";
+            render(state);
+        },
+
     },
+
     DialogsPage: {
         dialogItems,
         messages,
-        addMessage: (message) => {
+        addMessage: () => {
             state.DialogsPage.messages.push(
                 {
-                    message
+                    message: state.DialogsPage.currentText
                 }
             )
+            state.DialogsPage.currentText = "";
             render(state);
         },
-    },
-    addPost : (message) => {
-        state.ProfilePage.posts.push(
-            {
-                message
-            }
-        )
-        render(state);
+        currentText: "",
+        changeTextarea: (text) => {
+            state.DialogsPage.currentText = text;
+            render(state);
+
+        }
     },
 
+
 }
+
+window.state = state;
 
 export default state

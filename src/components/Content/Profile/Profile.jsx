@@ -6,6 +6,6 @@ import ProfileInfo from "./ProfileInfo/ProfileInfo";
 export default function Profile(props) {
     return <div className={s.content}>
         <ProfileInfo/>
-        <MyPosts state={props.state}/>
+        <MyPosts ProfilePage={props.ProfilePage}/>
     </div>
 }
