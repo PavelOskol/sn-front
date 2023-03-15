@@ -7,13 +7,13 @@ export default function MyPosts(props) {
     const Posts = props.state.ProfilePage.posts.map(post => <Post message={post.message}/>)
     const newPost = React.createRef();
     const addPost = () => props.state.addPost(newPost.current.value);
-
+    const textAreaClick = () => newPost.current.value =""
 
     return (
         <div className={s.content}>
             My posts
             <div className={s.ProfileBlock}>
-                <textarea ref={newPost} defaultValue={"New post"} />
+                <textarea ref={newPost} defaultValue={"New post"} onClick={textAreaClick}/>
             </div>
             <div className={s.ProfileBlock}>
                 <button onClick={addPost}>Add post</button>

@@ -1,3 +1,5 @@
+import render from "../render";
+
 const posts = [
     {message:"Хм, а пропсы реально круты"},
     {message:"Ну ка, что это за пропсы такие?"},
@@ -23,7 +25,15 @@ const state = {
     },
     DialogsPage: {
         dialogItems,
-        messages
+        messages,
+        addMessage: (message) => {
+            state.DialogsPage.messages.push(
+                {
+                    message
+                }
+            )
+            render(state);
+        },
     },
     addPost : (message) => {
         state.ProfilePage.posts.push(
@@ -31,7 +41,9 @@ const state = {
                 message
             }
         )
-    }
+        render(state);
+    },
+
 }
 
 export default state
