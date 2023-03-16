@@ -1,5 +1,3 @@
-import render from "../render";
-
 const posts = [
     {message:"Хм, а пропсы реально круты"},
     {message:"Ну ка, что это за пропсы такие?"},
@@ -17,7 +15,13 @@ const messages = [
     {message:"I'm here"},
 ]
 
+let render = () => {
 
+}
+
+export const subscriber = (observer) => {
+    render = observer;
+}
 
 const state = {
     ProfilePage:{
@@ -63,5 +67,6 @@ const state = {
 }
 
 window.state = state;
+
 
 export default state
