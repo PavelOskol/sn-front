@@ -18,10 +18,10 @@ const Message = (props) => {
 }
 export default function Messages(props) {
     const message = React.createRef();
-    const dialogItems = props.DialogsPage.dialogItems.map(item => <DialogItem id={item.id} name={item.name}/>);
-    const messages = props.DialogsPage.messages.map(message => <Message message={message.message}/>);
-    const sendMessage = () => props.DialogsPage.addMessage(message.current.value);
-    const changeTextarea = () => props.DialogsPage.changeTextarea(message.current.value);
+    const dialogItems = props.dispatch({type:"GET-DIALOG-ITEMS"}).map(item => <DialogItem id={item.id} name={item.name}/>);
+    const messages = props.dispatch({type:"GET-MESSAGES"}).map(message => <Message message={message.message}/>);
+    const sendMessage = () => props.dispatch({type:"SEND-MESSAGE"}); //(message.current.value);
+    const changeTextarea = () => props.dispatch({type:"CHANGES-NEW-MESSAGE", text:message.current.value})
 
 
 
@@ -33,7 +33,7 @@ export default function Messages(props) {
             <div className={s.messages}>
                 {messages}
                 <div>
-                    <textarea ref={message} value={props.DialogsPage.currentText} onChange={changeTextarea} />
+                    <textarea ref={message} value={props.dispatch({type:"GET-CURRENT-MESSAGE"})} onChange={changeTextarea} />
                 </div>
                 <div>
                     <button onClick={sendMessage}>Отправить мэссаге</button>

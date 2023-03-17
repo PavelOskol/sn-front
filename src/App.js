@@ -16,9 +16,9 @@ function App(props) {
                 <Sidebar/>
 
                 <Routes>
-                    <Route path="/profile" element={<Profile ProfilePage={props.state.ProfilePage}/>}/>
-                    <Route path="/" element={<Profile ProfilePage={props.state.ProfilePage}/>}/>
-                    <Route path="/messages/*" element={<Messages DialogsPage={props.state.DialogsPage}/>}/>
+                    <Route path="/profile" element={<Profile dispatch={props.dispatch}/>}/>
+                    <Route path="/" element={<Profile dispatch={props.dispatch}/>}/>
+                    <Route path="/messages/*" element={<Messages dispatch={props.dispatch}/>}/>
                     <Route path="/news" element={<News/>}/>
                     <Route path="/music" element={<Music/>}/>
                     {/*<Route path="/messages" element={<Messages/>}/>*/}

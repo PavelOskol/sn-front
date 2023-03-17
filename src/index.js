@@ -1,4 +1,4 @@
-import state, {subscriber} from "./redux/State";
+import store, {subscriber} from "./redux/State";
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -6,15 +6,15 @@ import {App} from './App';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-let render = (state) => {
+let app = (dispatch) => {
 
     root.render(
         <React.StrictMode>
-            <App state={state}/>
+            <App dispatch={dispatch}/>
         </React.StrictMode>
     );
 }
 
 
-render(state);
-subscriber(render);
+app(store.dispatch.bind(store));
+subscriber(app);

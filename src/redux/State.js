@@ -15,58 +15,71 @@ const messages = [
     {message:"I'm here"},
 ]
 
-let render = () => {
-
-}
+let sendToObservers = () => {}
 
 export const subscriber = (observer) => {
-    render = observer;
+    sendToObservers = observer;
 }
 
-const state = {
+const store = {
     ProfilePage:{
-        posts,
-        currentPost: "New post",
-        changeTextarea: (text) => {
-            state.ProfilePage.currentPost = text;
-            render(state);
-        },
-        addPost : () => {
-            state.ProfilePage.posts.push(
-                {
-                    message: state.ProfilePage.currentPost
-                }
-            )
-            state.ProfilePage.currentPost = "New post";
-            render(state);
-        },
-
+        _posts:posts,
+        _currentPost: "New post",
     },
-
     DialogsPage: {
-        dialogItems,
-        messages,
-        addMessage: () => {
-            state.DialogsPage.messages.push(
-                {
-                    message: state.DialogsPage.currentText
-                }
-            )
-            state.DialogsPage.currentText = "";
-            render(state);
-        },
-        currentText: "",
-        changeTextarea: (text) => {
-            state.DialogsPage.currentText = text;
-            render(state);
-
+        _dialogItems:dialogItems,
+        _messages:messages,
+        _currentText: "",
+    },
+    dispatch(action) {
+        switch (action.type) {
+            case "ADD-POST":
+                this.ProfilePage._posts.push(
+                    {
+                        message: this.ProfilePage._currentPost
+                    }
+                )
+                this.ProfilePage._currentPost = "New post";
+                sendToObservers(this.dispatch.bind(this));
+                break;
+            case "CHANGES-NEW-POST-TEXT":
+                this.ProfilePage._currentPost = action.text;
+                sendToObservers(this.dispatch.bind(this));
+                break;
+            case "GET-CURRENT-POST-TEXT":
+                return this.ProfilePage._currentPost;
+                break;
+            case "SEND-MESSAGE":
+                this.DialogsPage._messages.push(
+                    {
+                        message: this.DialogsPage._currentText
+                    }
+                )
+                store.DialogsPage._currentText = "";
+                sendToObservers(this.dispatch.bind(this));
+                break;
+            case "CHANGES-NEW-MESSAGE":
+                store.DialogsPage._currentText = action.text;
+                sendToObservers(this.dispatch.bind(this));
+                break;
+            case "GET-CURRENT-MESSAGE":
+                return this.DialogsPage._currentText;
+                break;
+            case "GET-POSTS" :
+                return this.ProfilePage._posts;
+                break;
+            case "GET-DIALOG-ITEMS":
+                return this.DialogsPage._dialogItems;
+                break;
+            case "GET-MESSAGES":
+                return this.DialogsPage._messages;
+                break;
+            default:
+                throw new Error("Unknown action");
         }
     },
-
-
 }
 
-window.state = state;
+window.store = store;
 
-
-export default state
+export default store;
