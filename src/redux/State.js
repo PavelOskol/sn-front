@@ -24,7 +24,7 @@ export const subscriber = (observer) => {
 const store = {
     ProfilePage:{
         _posts:posts,
-        _currentPost: "New post",
+        _currentPost: "",
     },
     DialogsPage: {
         _dialogItems:dialogItems,
@@ -39,7 +39,7 @@ const store = {
                         message: this.ProfilePage._currentPost
                     }
                 )
-                this.ProfilePage._currentPost = "New post";
+                this.ProfilePage._currentPost = "";
                 sendToObservers(this.dispatch.bind(this));
                 break;
             case "CHANGES-NEW-POST-TEXT":

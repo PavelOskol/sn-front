@@ -18,11 +18,10 @@ const Message = (props) => {
     )
 }
 export default function Messages(props) {
-    const message = React.createRef();
     const dialogItems = props.dispatch( actionCreators.getDialogItems() ).map(item => <DialogItem id={item.id} name={item.name}/>);
     const messages = props.dispatch( actionCreators.getMessages() ).map(message => <Message message={message.message}/>);
-    const sendMessage = () => props.dispatch(actionCreators.sendMessage()); //(message.current.value);
-    const changeTextarea = () => props.dispatch( actionCreators.changesNewMessage(message.current.value) );
+    const sendMessage = () => props.dispatch( actionCreators.sendMessage() ); //(message = refOnTextarea.current.value);
+    const changeTextarea = (element) => props.dispatch( actionCreators.changesNewMessage(element.target.value) );
 
 
 
@@ -35,7 +34,10 @@ export default function Messages(props) {
             <div className={s.messages}>
                 {messages}
                 <div>
-                    <textarea ref={message} value={ props.dispatch(actionCreators.getCurrentMessage() )} onChange={changeTextarea} />
+                    <textarea value={ props.dispatch(actionCreators.getCurrentMessage() )}
+                              onChange={changeTextarea}
+                              placeholder={"Энтэр ё мэссаге"}
+                    />
                 </div>
                 <div>
                     <button onClick={sendMessage}>Отправить мэссаге</button>
