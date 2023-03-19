@@ -6,6 +6,6 @@ import ProfileInfo from "./ProfileInfo/ProfileInfo";
 export default function Profile(props) {
     return <div className={s.content}>
         <ProfileInfo/>
-        <MyPosts dispatch={props.dispatch}/>
+        <MyPosts dispatch={props.dispatch} ProfilePage={props.ProfilePage}/>
     </div>
 }
