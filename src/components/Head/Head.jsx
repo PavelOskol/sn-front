@@ -1,4 +1,3 @@
-import React from "react";
 import s from "./Head.module.css"
 
 export default function Header() {

@@ -10,7 +10,8 @@
 }
 
 .dialogsItems .dialog {
-
+    font-family: "DejaVu Sans",Arial, Helvetica, sans-serif;
+    font-style: italic;
 }
 
 .dialogsItems .active {

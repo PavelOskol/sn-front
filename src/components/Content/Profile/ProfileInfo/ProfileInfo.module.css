@@ -9,3 +9,7 @@
 .ProfileInfo h1 {
     text-align: center;
 }
+
+.ProfileBlock {
+    font-style: italic;
+}

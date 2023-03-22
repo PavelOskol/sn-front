@@ -1,31 +1,20 @@
-import React from "react";
 import s from "./Messages.module.css"
 import {NavLink} from "react-router-dom";
-import {actionCreators} from "../../../redux/action-creator";
 
-const DialogItem = (props) => {
+const DialogItem = ({id, name}) => {
     return (
-        <div className={s.dialog}>
-            <NavLink to={"/messages/" + props.id}
-                     className={navData => navData.isActive ? s.active : s.dialog}>{props.name}</NavLink>
-        </div>
+        <NavLink to={"/messages/" + id}
+                 className={ navData => navData.isActive ? `${s.dialog} ${s.active}` : s.dialog } >
+            {name}
+        </NavLink>
     )
 };
 
-const Message = (props) => {
-    return (
-        <div className={s.message}>{props.message}</div>
-    )
-}
-export default function Messages(props) {
-    const dialogItems = props.DialogsPage._dialogItems.map(item => <DialogItem id={item.id} name={item.name}/>);
-    const messages = props.DialogsPage._messages.map(message => <Message message={message.message}/>);
+const Message = (props) => <div className={s.message}>{props.message}</div>
 
-    const sendMessage = () => props.dispatch( actionCreators.sendMessage() ); //(message = refOnTextarea.current.value);
-    const changeTextarea = (element) => props.dispatch( actionCreators.changesNewMessage(element.target.value) );
-    const currentMessage = () => props.DialogsPage._currentText;
-
-
+export default function Messages({dialogs, messages, currentMessage, changeTextarea, sendMessage}) {
+    const dialogItems = dialogs.map(item => <DialogItem {...item}/>);
+    messages = messages.map(message => <Message message={message.message}/>);
 
     return (
         <div className={s.dialogs}>
@@ -35,9 +24,10 @@ export default function Messages(props) {
             <div className={s.messages}>
                 {messages}
                 <div>
-                    <textarea value={ currentMessage() }
-                              onChange={changeTextarea}
-                              placeholder={"Энтэр ё мэссаге"}
+                    <input type={"text"}
+                           value={currentMessage()}
+                           onChange={changeTextarea}
+                           placeholder={"Энтэр ё мэссаге"}
                     />
                 </div>
                 <div>
