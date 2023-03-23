@@ -1,9 +1,9 @@
 .sidebar {
     grid-area: sidebar;
-    box-sizing: border-box;
 }
 
 .sidebar a {
+    margin: 0 0 4px 0;
     vertical-align: bottom;
     height:45px;
     padding: 5px 0 5px 50px;
@@ -12,7 +12,7 @@
     color: #457e86;
     display: block;
     background-color: #04ccd0;
-    border-radius: 10px;
+    border-radius: 30px 10px 30px 10px;
     transition: all 0.5s;
     box-sizing: border-box;
 
@@ -31,8 +31,8 @@
 
 .sidebar a.active {
     color: #2a4a50;
-    background-color: #03a9ad;
-    border: 2px solid #039ea2;
+    background-color: #03b3b7;
+    border: 2px solid #04acb0;
     padding: 4px 0 5px 50px;
 
     box-sizing: border-box;
