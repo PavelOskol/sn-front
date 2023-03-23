@@ -8,7 +8,7 @@ import Music from "./components/Content/Music/Music";
 import MessagesContainer from "./components/Content/Messages/MessagesContainer";
 
 
-function App(props) {
+function App() {
     return (
         <BrowserRouter>
             <div className="App">
@@ -16,9 +16,9 @@ function App(props) {
                 <Sidebar/>
 
                 <Routes>
-                    <Route path="/profile" element={<Profile dispatch={props.dispatch} ProfilePage={props.store.ProfilePage}/> }/>
-                    <Route path="/" element={<Profile dispatch={props.dispatch} ProfilePage={props.store.ProfilePage}/> }/>
-                    <Route path="/messages/*" element={<MessagesContainer dispatch={props.dispatch} DialogsPage={props.store.DialogsPage}/>}/>
+                    <Route path="/profile" element={<Profile /> }/>
+                    <Route path="/" element={<Profile /> }/>
+                    <Route path="/messages/*" element={<MessagesContainer />}/>
                     <Route path="/news" element={<News/>}/>
                     <Route path="/music" element={<Music/>}/>
                     {/*<Route path="/messages" element={<Messages/>}/>*/}
