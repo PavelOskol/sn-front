@@ -6,6 +6,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import News from "./components/Content/News/News";
 import Music from "./components/Content/Music/Music";
 import MessagesContainer from "./components/Content/Messages/MessagesContainer";
+import UsersContainer from "./components/Content/Users/UsersContainer";
 
 
 function App() {
@@ -16,11 +17,12 @@ function App() {
                 <Sidebar/>
 
                 <Routes>
-                    <Route path="/profile" element={<Profile /> }/>
-                    <Route path="/" element={<Profile /> }/>
-                    <Route path="/messages/*" element={<MessagesContainer />}/>
-                    <Route path="/news" element={<News/>}/>
-                    <Route path="/music" element={<Music/>}/>
+                    <Route path="/profile" element={<Profile />}   />
+                    <Route path="/" element={<Profile />}  />
+                    <Route path="/users" element={<UsersContainer />}   />
+                    <Route path="/messages/*" element={<MessagesContainer />}   />
+                    <Route path="/news" element={<News/>}   />
+                    <Route path="/music" element={<Music/>} />
                     {/*<Route path="/messages" element={<Messages/>}/>*/}
                 </Routes>
 

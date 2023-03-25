@@ -1,0 +1,32 @@
+.users {
+    max-width: 1200px;
+    margin-left: 15%;
+    margin-right: 15%;
+    background-color: #b09fd3;
+}
+
+.user {
+    display: grid;
+    grid-template-columns: 3fr 6fr 2fr;
+    max-height: 150px;
+
+}
+
+.user img {
+    width: 80%;
+    height: 100%;
+}
+
+.user .selfDescription {
+
+}
+
+.user input {
+    width: 20%;
+    height: 100%;
+
+}
+
+.user .ava {
+    display: flex;
+}
