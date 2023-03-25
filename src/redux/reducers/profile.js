@@ -8,24 +8,27 @@ const profileReducer = (state = {
 }, action) => {
     switch (action.type) {
         case "ADD-POST":
-            state._posts.push(
+            /*state._posts.push(
                 {
                     message: state._currentPost
                 }
             )
             state._currentPost = "";
-            break;
-        case "CHANGES-NEW-POST-TEXT":
-            state._currentPost = action.text;
-            break;
-        /*case "GET-CURRENT-POST-TEXT":
-            return state._currentPost;
-            break;
-        case "GET-POSTS" :
-            return state._posts;
             break;*/
+            return {
+                _posts: [...state._posts, {message: state._currentPost} ],
+                _currentPost: ""
+            }
+        case "CHANGES-NEW-POST-TEXT":
+            /*state._currentPost = action.text;
+            break;*/
+            return {
+                ...state,
+                _currentPost: action.text,
+            }
+        default:
+            return state;
     }
-    return state;
 }
 
 export default profileReducer;

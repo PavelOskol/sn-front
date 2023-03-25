@@ -1,21 +1,22 @@
-import store, {StoreContext} from "./redux/redux-store";
+import store from "./redux/redux-store";
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import {App} from './App';
+import {Provider} from "react-redux";
 
-//store.dispatch({type: "initial store from reducers"})
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const app = () => {
     root.render(
         <React.StrictMode>
-            <StoreContext.Provider value={store}>
+            <Provider store={store}>
                 <App />
-            </StoreContext.Provider>
+            </Provider>
         </React.StrictMode>
     );
 }
 
 
 app();
-store.subscribe(app);
+

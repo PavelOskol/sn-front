@@ -15,6 +15,7 @@ const Message = (props) => <div className={s.message}>{props.message}</div>
 export default function Messages({dialogs, messages, currentMessage, changeTextarea, sendMessage}) {
     const dialogItems = dialogs.map(item => <DialogItem {...item}/>);
     messages = messages.map(message => <Message message={message.message}/>);
+    const keyPress = press => press.key === "Enter" ? sendMessage() : null;
 
     return (
         <div className={s.dialogs}>
@@ -25,8 +26,9 @@ export default function Messages({dialogs, messages, currentMessage, changeTexta
                 {messages}
                 <div>
                     <input type={"text"}
-                           value={currentMessage()}
+                           value={currentMessage}
                            onChange={changeTextarea}
+                           onKeyDown={keyPress}
                            placeholder={"Энтэр ё мэссаге"}
                     />
                 </div>
