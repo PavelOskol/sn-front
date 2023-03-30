@@ -1,8 +1,21 @@
 import s from "./Users.module.css"
+import axios from "axios";
 
-const User = ({id, avaUrl, followed, name, surname, selfDescription, location,follow,unfollow}) => {
+const User = ({
+                  _id = "",
+                  ava = {
+                      smallAva: "/img/default-user.png"
+                  },
+                  followed = false,
+                  name,
+                  surname,
+                  selfDescription,
+                  location = {cityName: "", countryName: ""},
+                  follow,
+                  unfollow
+              }) => {
     const buttonText = () => followed ? "Отписаться" : "Подписаться";
-    const buttonClick = () => followed ? unfollow(id) : follow(id) ;
+    const buttonClick = () => followed ? unfollow(_id) : follow(_id);
 
     return <div className={s.user}>
         <div className={s.ava}>
@@ -11,7 +24,7 @@ const User = ({id, avaUrl, followed, name, surname, selfDescription, location,fo
                    onClick={buttonClick}
 
             />
-            <img src={avaUrl} alt={"ava"}/>
+            <img src={ava.smallAva} alt={"ava"}/>
         </div>
         <div>
             <div>{name + " " + surname}</div>
@@ -25,7 +38,7 @@ const User = ({id, avaUrl, followed, name, surname, selfDescription, location,fo
 }
 
 export default function Users(props) {
-    const initialUsers = [
+    /*const initialUsers = [
         {
             id: 1,
             avaUrl: "/img/TsAva.jpg",
@@ -53,11 +66,16 @@ export default function Users(props) {
             selfDescription: "Molodec",
             location: {cityName: "Moscow", countryName: "Russia"}
         },
-    ];
+    ];*/
 
-    if (props.users.length === 0) props.setUsers(initialUsers);
 
-    const users = props.users.map(user => <User key={user.id} follow={props.follow} unfollow={props.unfollow} {...user}  />)
+    if (props.users.length === 0) axios.get('/api/auth/users')
+            .then(res => props.setUsers(res.data));
+
+    const users = props.users.map(user => <User key={user._id}
+                                                follow={props.follow}
+                                                unfollow={props.unfollow}
+                                                {...user}  /> )
 
     return <div className={s.users}>
         {users}

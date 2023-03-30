@@ -14,11 +14,11 @@ export const actionCreators = {
             text,
         }
     },
-    follow(id){
-        return {type: "FOLLOW",id}
+    follow(_id){
+        return {type: "FOLLOW",_id}
     },
-    unfollow(id) {
-        return {type: "UNFOLLOW",id}
+    unfollow(_id) {
+        return {type: "UNFOLLOW",_id}
     },
     setUsers(users) {
         return {type: "SET-USERS", users}

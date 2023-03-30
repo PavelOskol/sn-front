@@ -3,14 +3,14 @@ export default function usersReducer(state ={users: []}, action) {
         case "FOLLOW":
             return {
                 users: [...state.users.map( u => {
-                    if (u.id === action.id) u.followed = true;
+                    if (u._id === action._id) u.followed = true;
                     return u;
                 })],
             }
         case "UNFOLLOW":
             return {
                 users: [...state.users.map( u => {
-                    if (u.id === action.id) u.followed = false;
+                    if (u._id === action._id) u.followed = false;
                     return u;
                 })],
             }
