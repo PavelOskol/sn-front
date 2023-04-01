@@ -38,11 +38,11 @@ const User = ({
 }
 
 export default class Users extends React.Component  {
-    constructor(props) {
-        super(props);
+    componentDidMount() {
         axios.get('/api/auth/users')
-            .then(res => props.setUsers(res.data));
-    };
+            .then(res => this.props.setUsers(res.data));
+    }
+
     render() {
         const users = this.props.users.map(user => <User key={user._id}
                                                     follow={this.props.follow}
