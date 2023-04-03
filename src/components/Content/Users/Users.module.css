@@ -1,8 +1,12 @@
-.users {
+.content {
     max-width: 1200px;
     margin-left: 15%;
     margin-right: 15%;
     background-color: #b09fd3;
+}
+
+.users {
+
 }
 
 .user {
@@ -29,4 +33,15 @@
 
 .user .ava {
     display: flex;
+}
+
+.pages {
+    text-align: center;
+    cursor: pointer;
+    font-size: 1.3em;
+}
+
+.selectedPage {
+    font-weight: bold;
+    font-size: 1.4em;
 }

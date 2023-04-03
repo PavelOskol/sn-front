@@ -22,6 +22,15 @@ export const actionCreators = {
     },
     setUsers(users) {
         return {type: "SET-USERS", users}
+    },
+    setUsersCount(count) {
+        return {type: "SET-USERS-COUNT", count}
+    },
+    setUsersPage (page) {
+        return { type: "SET-PAGE", page}
+    },
+    setFetching () {
+        return {type: "FETCHING"}
     }
     /*    getCurrentMessage() { return {type:"GET-CURRENT-MESSAGE"} },
         getPosts() { return {type:"GET-POSTS"} },

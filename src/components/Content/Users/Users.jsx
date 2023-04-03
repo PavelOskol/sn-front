@@ -1,6 +1,6 @@
 import s from "./Users.module.css"
-import React from "react";
-import axios from "axios";
+import Loading from "../../common/Loading";
+
 
 const User = ({
                   _id = "",
@@ -37,19 +37,37 @@ const User = ({
     </div>
 }
 
-export default class Users extends React.Component  {
-    componentDidMount() {
-        axios.get('/api/auth/users')
-            .then(res => this.props.setUsers(res.data));
+
+export default function Users(props) {
+
+    const users = props.users.map(user => <User key={user._id}
+                                                follow={props.follow}
+                                                unfollow={props.unfollow}
+                                                {...user}  />)
+
+    const pagesCount = Math.ceil(props.usersCount / 5);
+    let pages = [];
+    for (let i = 1; i <= pagesCount; i++) {
+        pages.push(i);
     }
 
-    render() {
-        const users = this.props.users.map(user => <User key={user._id}
-                                                    follow={this.props.follow}
-                                                    unfollow={this.props.unfollow}
-                                                    {...user}  />)
-        return <div className={s.users}>
-            {users}
+    pages = pages.map(num => <span className={props.currentPage === num ? s.selectedPage : null}
+                                   onClick={() => props.setPage(num)}>
+            {num}
+            </span>)
+
+    return (
+        <div className={s.content}>
+            {props.isFetching ?
+                <Loading/> :
+                <>
+                    <div className={s.pages}>
+                        {pages}
+                    </div>
+                    <div className={s.users}>
+                        {users}
+                    </div>
+                </>}
         </div>
-    }
+    )
 }
