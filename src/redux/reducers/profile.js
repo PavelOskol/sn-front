@@ -1,27 +1,25 @@
 const profileReducer = (state = {
     _posts: [
-        {message:"Хм, а пропсы реально круты"},
-        {message:"Ну ка, что это за пропсы такие?"},
-        {message:"Хэлоу ворлд"}
+        {_id: 1, message:"Хм, а пропсы реально круты"},
+        {_id: 2, message:"Ну ка, что это за пропсы такие?"},
+        {_id: 3, message:"Хэлоу ворлд"}
     ],
     _currentPost: "",
+    profile: {},
 }, action) => {
     switch (action.type) {
-        case "ADD-POST":
-            /*state._posts.push(
-                {
-                    message: state._currentPost
-                }
-            )
-            state._currentPost = "";
-            break;*/
+        case "SET-PROFILE":
             return {
+                ...state,
+                profile: action.profile,
+            }
+        case "ADD-POST":
+            return {
+                ...state,
                 _posts: [...state._posts, {message: state._currentPost} ],
                 _currentPost: ""
             }
         case "CHANGES-NEW-POST-TEXT":
-            /*state._currentPost = action.text;
-            break;*/
             return {
                 ...state,
                 _currentPost: action.text,
@@ -31,4 +29,16 @@ const profileReducer = (state = {
     }
 }
 
+export function addPost() {
+    return {type:"ADD-POST"}
+}
+export function changesNewPostText(text) {
+    return {
+        type: "CHANGES-NEW-POST-TEXT",
+        text
+    }
+}
+export function setProfile(profile) {
+    return {type:"SET-PROFILE", profile}
+}
 export default profileReducer;

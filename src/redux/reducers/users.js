@@ -39,4 +39,23 @@ export default function usersReducer(state ={users: [],currentPage: 1, usersCoun
         default:
             return state;
     }
+};
+
+export function follow(_id){
+    return {type: "FOLLOW",_id}
+}
+export function unfollow(_id) {
+    return {type: "UNFOLLOW",_id}
+}
+export function setUsers(users) {
+    return {type: "SET-USERS", users}
+}
+export function setUsersCount(count) {
+    return {type: "SET-USERS-COUNT", count}
+}
+export function setUsersPage (page) {
+    return { type: "SET-PAGE", page}
+}
+export function setFetching () {
+    return {type: "FETCHING"}
 }
