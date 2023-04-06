@@ -1,5 +1,6 @@
 import s from "./Users.module.css"
 import Loading from "../../common/Loading";
+import {NavLink} from "react-router-dom";
 
 
 const User = ({
@@ -24,7 +25,9 @@ const User = ({
                    value={buttonText()}
                    onClick={buttonClick}
             />
-            <img src={ava.smallAva} alt={"ava"}/>
+            <NavLink to={"/profile/" + _id}>
+                <img src={ava.smallAva} alt={"ava"}/>
+            </NavLink>
         </div>
         <div>
             <div>{name + " " + surname}</div>

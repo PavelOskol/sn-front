@@ -1,6 +1,13 @@
 import s from "./ProfileInfo.module.css"
 
-export default function ProfileInfo({_id,name,surname,ava = {smallAva: "/img/i.webp"},selfDescription,location = {countryName:"",cityName:""} }) {
+export default function ProfileInfo({
+                                        _id,
+                                        name = "Имя",
+                                        surname = "Фамилия",
+                                        ava = {smallAva: "/img/i.webp"},
+                                        selfDescription = "Обо мне",
+                                        location = {countryName:"",cityName:""},
+                                    }) {
     return (
         <div className={s.ProfileInfo}>
             <div>
