@@ -9,9 +9,9 @@ const User = ({
                       smallAva: "/img/default-user.png"
                   },
                   followed = false,
-                  name,
-                  surname,
-                  selfDescription,
+                  name = "Без имени",
+                  surname = "Без фамилии",
+                  selfDescription = "И о себе ничего не указал",
                   location = {cityName: "", countryName: ""},
                   follow,
                   unfollow

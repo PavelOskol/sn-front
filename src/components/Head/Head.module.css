@@ -1,5 +1,5 @@
 .appHeader {
-    background-color: darkolivegreen;
+    background-color: #392f3b;
     /*min-height: 100vh;*/
     /*display: flex;*/
     /*flex-direction: column;*/
@@ -14,6 +14,18 @@
     height: 100%;
     width: 20%;
     /*horiz-align: center;*/
-    margin: auto;
+    display: inline-block;
+    margin-left:   50%;
+}
+
+.appHeader a {
+    color: #457e86;
+    float: right;
+    margin: 10px 20px auto auto;
     display: block;
+    text-decoration: none;
+}
+
+.appHeader a:hover {
+    color: #335c62;
 }

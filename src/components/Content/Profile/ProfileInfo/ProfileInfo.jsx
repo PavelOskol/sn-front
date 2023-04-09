@@ -2,6 +2,7 @@ import s from "./ProfileInfo.module.css"
 
 export default function ProfileInfo({
                                         _id,
+                                        login = "Логин",
                                         name = "Имя",
                                         surname = "Фамилия",
                                         ava = {smallAva: "/img/i.webp"},
@@ -14,7 +15,7 @@ export default function ProfileInfo({
                 <img className={s.img} src={ava.smallAva} alt={"My ava"}/>
             </div>
             <div className={s.ProfileBlock}>
-                <h1> {`${name} ${surname}`} </h1>
+                <h1> {`${login} ${name} ${surname}`} </h1>
                 <p> {"Self description: " + selfDescription} </p>
                 <div> {`Страна: ${location.countryName}  Город: ${location.cityName}`} </div>
             </div>

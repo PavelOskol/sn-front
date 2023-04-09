@@ -7,6 +7,9 @@ import News from "./components/Content/News/News";
 import Music from "./components/Content/Music/Music";
 import MessagesContainer from "./components/Content/Messages/MessagesContainer";
 import UsersContainer from "./components/Content/Users/UsersContainer";
+import LoginPage from "./components/Head/Authorize/LoginPage";
+import RegistrationPage from "./components/Head/Authorize/RegisrationPage";
+import LogoffPage from "./components/Head/Authorize/LogoffPage";
 
 
 function App() {
@@ -14,11 +17,18 @@ function App() {
         <BrowserRouter>
             <div className="App">
                 <Header/>
-                <Sidebar/>
+                <Sidebar />
 
                 <Routes>
                     <Route path="/profile/:userId" element={<ProfileContainer />}   />
+                    <Route path="/profile/" element={<ProfileContainer />}   />
                     <Route path="/" element={<ProfileContainer />}  />
+
+                    <Route path="/login" element={<LoginPage /> }   />
+                    <Route path="/registration" element={<RegistrationPage /> }   />
+                    <Route path="/logoff" element={ <LogoffPage /> } />
+
+
                     <Route path="/users" element={<UsersContainer />}   />
                     <Route path="/messages/*" element={<MessagesContainer />}   />
                     <Route path="/news" element={<News/>}   />
