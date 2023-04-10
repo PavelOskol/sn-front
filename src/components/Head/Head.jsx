@@ -7,7 +7,7 @@ export default function Header() {
     return <header className={s.appHeader}>
         <img src="/img/head.jpg" alt="logo"/>
         {Authorized ?
-            <NavLink to={"/logoff"}> Logoff </NavLink>
+            <NavLink to={"/logout"}> Logout </NavLink>
             :
             <>
                 <NavLink to={"/login"}> Login </NavLink>

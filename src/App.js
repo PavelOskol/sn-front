@@ -26,7 +26,7 @@ function App() {
 
                     <Route path="/login" element={<LoginPage /> }   />
                     <Route path="/registration" element={<RegistrationPage /> }   />
-                    <Route path="/logoff" element={ <LogoffPage /> } />
+                    <Route path="/logout" element={ <LogoffPage /> } />
 
 
                     <Route path="/users" element={<UsersContainer />}   />

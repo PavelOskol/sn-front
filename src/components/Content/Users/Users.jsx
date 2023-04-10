@@ -5,6 +5,7 @@ import {NavLink} from "react-router-dom";
 
 const User = ({
                   _id = "",
+                  login,
                   ava = {
                       smallAva: "/img/default-user.png"
                   },
@@ -30,6 +31,7 @@ const User = ({
             </NavLink>
         </div>
         <div>
+            <div>{login}</div>
             <div>{name + " " + surname}</div>
             <div className={s.selfDescription}> Self description: {selfDescription} </div>
         </div>
