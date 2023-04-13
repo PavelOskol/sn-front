@@ -9,7 +9,7 @@ import MessagesContainer from "./components/Content/Messages/MessagesContainer";
 import UsersContainer from "./components/Content/Users/UsersContainer";
 import LoginPage from "./components/Head/Authorize/LoginPage";
 import RegistrationPage from "./components/Head/Authorize/RegisrationPage";
-import LogoffPage from "./components/Head/Authorize/LogoffPage";
+import LogoutPage from "./components/Head/Authorize/LogoutPage";
 
 
 function App() {
@@ -20,13 +20,13 @@ function App() {
                 <Sidebar />
 
                 <Routes>
-                    <Route path="/profile/:userId" element={<ProfileContainer />}   />
+                    <Route path="/profile/:userId" element={<ProfileContainer />}   />          {/*тут создаются params userId */}
                     <Route path="/profile/" element={<ProfileContainer />}   />
                     <Route path="/" element={<ProfileContainer />}  />
 
                     <Route path="/login" element={<LoginPage /> }   />
                     <Route path="/registration" element={<RegistrationPage /> }   />
-                    <Route path="/logout" element={ <LogoffPage /> } />
+                    <Route path="/logout" element={ <LogoutPage /> } />
 
 
                     <Route path="/users" element={<UsersContainer />}   />

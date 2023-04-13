@@ -29,14 +29,14 @@ function ProfileMiddleware(props) {
     let navigate = useNavigate();
     let token = useSelector( state => state.Authorized.token);
     useEffect(() => {
-
         if (!props.isAuthorized) return navigate('/login')
         if (!params.userId) params.userId = props._id;
-        axios.get('/api/profile/' + params.userId, {headers: {"Authorization": token}})
+        axios.get('/api/profile/' + params.userId, {headers: {"Authorization": "Bearer " + token}})
             .then(res => {
+                if (!res) throw new Error("No request");
                 props.setProfile(res.data.entries);
-            });
-    },[])
+            }).catch(e => console.log(e.message));
+    },[]);
 
     return <div className={s.content}>
         <ProfileInfo {...props.profile} />

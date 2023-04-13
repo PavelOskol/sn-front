@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 import {login_off, setId, setToken} from "../../../redux/reducers/authorized";
 import {useEffect} from "react";
 
-export default function LogoffPage() {
+export default function LogoutPage() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
