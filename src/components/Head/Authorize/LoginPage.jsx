@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {changeLogin, changePassword, login_off, setId, setToken} from "../../../redux/reducers/authorized";
+import {changeLogin, changePassword, changeLoginStatus, setId, setToken} from "../../../redux/reducers/authorized";
 import {useNavigate} from "react-router-dom"
 import axios from "axios";
 
@@ -17,10 +17,9 @@ export default function LoginPage() {
             dispatch(setToken(res.data.token));
             dispatch(changeLogin(""));
             dispatch(changePassword(""));
-            dispatch(login_off(true));
+            dispatch(changeLoginStatus(true));
             dispatch(setId(res.data._id));
             navigate('/profile')
-
         }).catch(e => {
            // debugger;
             alert(e.response.data.error)

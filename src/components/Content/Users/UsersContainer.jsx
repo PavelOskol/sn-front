@@ -2,15 +2,15 @@ import {connect} from "react-redux";
 import Users from "./Users";
 import React from "react";
 import axios from "axios";
-import {follow,unfollow,setUsers,setUsersCount,setUsersPage,setFetching} from "../../../redux/reducers/users.js"
+import {setUsers,setUsersCount,setUsersPage,setFetching} from "../../../redux/reducers/users.js"
+import {refreshFriends} from "../../../redux/reducers/profile";
 
 
 const MapStateToProps = (state) => ({ ...state.UsersPage });
 
 const MapDispatchToProps = {
-    follow,
-    unfollow,
     setUsers,
+    refreshFriends,
     setUsersCount,
     setUsersPage,
     setFetching,

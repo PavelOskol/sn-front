@@ -1,31 +1,83 @@
 import s from "./Users.module.css"
 import Loading from "../../common/Loading";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
+import {useEffect} from "react";
+import {useSelector} from "react-redux";
+import axios from "axios";
 
 
 const User = ({
+                  //ПРинимаем пропсы
                   _id = "",
                   login,
                   ava = {
                       smallAva: "/img/default-user.png"
                   },
-                  followed = false,
                   name = "Без имени",
                   surname = "Без фамилии",
                   selfDescription = "И о себе ничего не указал",
                   location = {cityName: "", countryName: ""},
-                  follow,
-                  unfollow
+                  refreshFriends,
+                  token
               }) => {
-    const buttonText = () => followed ? "Отписаться" : "Подписаться";
-    const buttonClick = () => followed ? unfollow(_id) : follow(_id);
 
+    //берем из стэйта друзей текущего пользователя
+    let userFriendStatus;
+    const myFriends = useSelector(state => state.ProfilePage.profile.friends,);
+    const myOutgoingFriendRequests = useSelector(state => state.ProfilePage.profile.outgoing_friend_requests);
+    const myIncomingFriendRequests = useSelector(state => state.ProfilePage.profile.incoming_friend_requests);
+
+    //определяем статус юзера, исходя из того есть ли он у текущего пользователя в друзьях
+    if (myFriends.includes(_id)) {
+        userFriendStatus = "Friend";
+    } else {
+        if (myOutgoingFriendRequests.includes(_id)) {
+            userFriendStatus = "Subscribed";
+        } else {
+            if (myIncomingFriendRequests.includes(_id)) {
+                userFriendStatus = "Follower";
+            } else
+                userFriendStatus = "Stranger"
+        }
+    }
+
+    //определяем сайдэффект функцию, которая будет вызвана по нажатию на кнопку - добавить/удалить друга
+    //функция делает запрос на сервак, принимает список друзей, и обновляет его в стейте
+    const changeFriendStatus = async (_id, effect) => {
+        let friends;
+        await axios.put('/api/friend_request', {
+            addFriend: effect === "add",
+            deleteFriend: effect === "delete",
+            friend_id: _id
+        },{headers: {"Authorization": "Bearer " + token}}
+            ).then(req => {
+            friends = req.data.success ? req.data.me : null;
+            refreshFriends(friends);                      //диспатчим обновленный список друзей в стейт
+        }).catch(e => console.log(e.message));
+
+    }
+
+    const MY_ID = useSelector(state => state.Authorized._id)        //узнаем айди текущего пользователя из стэйта
+
+    //вешаем колбэк удаления/добавления друга на кнопку, в зависимости от текущего статуса юзера
+    const buttonClick = () => userFriendStatus === "Friend" || userFriendStatus === "Subscribed" ? changeFriendStatus(_id,"delete") : changeFriendStatus(_id,"add");
+    //пишем на кнопку то что она делает
+    const buttonLabel = userFriendStatus === "Friend" ? "Удалить из друзей" :
+        userFriendStatus === "Subscribed" ? "Отменить заявку" :
+        userFriendStatus === "Follower" ? "Принять заявку" :
+        userFriendStatus === "Stranger" ? "Добавить в друзья": "error: unknown status"
+
+    //рисуем это дерьмо
     return <div className={s.user}>
         <div className={s.ava}>
-            <input type="button"
-                   value={buttonText()}
-                   onClick={buttonClick}
-            />
+            {/*не ресуем кнопку если юзер это текущий пользователь*/}
+            {_id !== MY_ID ?
+                <input type="button"
+                       value={buttonLabel}
+                       onClick={buttonClick}
+                />
+                : <></>
+            }
             <NavLink to={"/profile/" + _id}>
                 <img src={ava.smallAva} alt={"ava"}/>
             </NavLink>
@@ -45,22 +97,43 @@ const User = ({
 
 export default function Users(props) {
 
-    const users = props.users.map(user => <User key={user._id}
-                                                follow={props.follow}
-                                                unfollow={props.unfollow}
-                                                {...user}  />)
+    let navigate = useNavigate();
+    const token = useSelector(state => state.Authorized.token);
+    const isAuthorized = useSelector(state => state.Authorized.isAuthorized)
+    //при каждой отрисовки юзеров запрашиваем актуальных друзей, и обновляем их в стейт. На случай если кто то нас добавил в промежутках
+    useEffect(() => {
+        //если мы не авторизованы - уходим на логин
+        if (!isAuthorized) return navigate('/login')
+        //запрашиваем, then диспатчим рефреш
+        axios.get('/api/friends/', {headers: {"Authorization": "Bearer " + token}})
+            .then(res => {
+                if (!res) throw new Error("No request");
+                props.refreshFriends(res.data);
+            }).catch(e => console.log(e.message));
+    });
 
+    //мапируем юзеров из стейта, превращая их в разметку
+    const users = props.users.map(user => <User key={user._id}
+                                                {...user}
+                                                refreshFriends={props.refreshFriends}
+                                                token={token}
+    />)
+
+    //считаем к-во страниц юзеров, создаем массив с номерами страниц
     const pagesCount = Math.ceil(props.usersCount / 5);
     let pages = [];
     for (let i = 1; i <= pagesCount; i++) {
         pages.push(i);
     }
 
-    pages = pages.map(num => <span className={props.currentPage === num ? s.selectedPage : null}
-                                   onClick={() => props.setPage(num)}>
-            {num}
+    //мапируем номера страниц, превращая их в спан ссылки
+    pages = pages.map(num =>
+        <span className={props.currentPage === num ? s.selectedPage : null}
+              onClick={() => props.setPage(num)}>
+                {num}
             </span>)
 
+    //рисуем это дерьмо
     return (
         <div className={s.content}>
             {props.isFetching ?

@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {login_off, setId, setToken} from "../../../redux/reducers/authorized";
+import {changeLoginStatus, setId, setToken} from "../../../redux/reducers/authorized";
 import {useEffect} from "react";
 
 export default function LogoutPage() {
@@ -8,7 +8,7 @@ export default function LogoutPage() {
     const dispatch = useDispatch();
 
     useEffect(()=> {
-        dispatch(login_off(false));
+        dispatch(changeLoginStatus(false));
         dispatch(setToken(""));
         dispatch(setId(""));
         navigate('/login');

@@ -41,7 +41,7 @@ export function setId (_id) {
         _id
     }
 }
-export function login_off (isAuthorized){
+export function changeLoginStatus (isAuthorized){
     return {
         type: "LOGIN-LOGOFF",
         isAuthorized

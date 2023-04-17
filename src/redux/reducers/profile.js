@@ -13,6 +13,14 @@ const profileReducer = (state = {
                 ...state,
                 profile: action.profile,
             }
+        case "REFRESH-FRIENDS":
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    ...action.friends
+                }
+            }
         case "ADD-POST":
             return {
                 ...state,
@@ -41,4 +49,9 @@ export function changesNewPostText(text) {
 export function setProfile(profile) {
     return {type:"SET-PROFILE", profile}
 }
+
+export function refreshFriends(friends) {
+    return {type: "REFRESH-FRIENDS", friends}
+}
+
 export default profileReducer;
