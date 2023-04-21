@@ -1,12 +1,12 @@
 import {connect} from "react-redux";
 import Users from "./Users";
 import React from "react";
-import axios from "axios";
 import {setUsers,setUsersCount,setUsersPage,setFetching} from "../../../redux/reducers/users.js"
 import {refreshFriends} from "../../../redux/reducers/profile";
+import api from "../../../DAL/api";
 
 
-const MapStateToProps = (state) => ({ ...state.UsersPage });
+const MapStateToProps = (state) => ({ ...state.UsersPage, token: state.Authorized.token });
 
 const MapDispatchToProps = {
     setUsers,
@@ -23,11 +23,11 @@ class UsersMiddleware extends React.Component {
 
     setPage = (page) => {
         this.props.setFetching();
-        axios.get('/api/auth/users?page=' + page)
-            .then(res => {
+        api.getUsers(page,this.props.token)
+            .then(data => {
                 this.props.setUsersPage(page);
-                this.props.setUsersCount(res.data.count);
-                this.props.setUsers(res.data.entries);
+                this.props.setUsersCount(data.count);
+                this.props.setUsers(data.entries);
                 this.props.setFetching();
             });
     };

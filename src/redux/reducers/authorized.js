@@ -6,10 +6,21 @@ const authorizedReducer = (state = {
     _id: ""
 }, action) => {
     switch (action.type) {
-        case "LOGIN-LOGOFF":
+        case "LOGIN":
             return {
                 ...state,
-                isAuthorized: action.isAuthorized
+                isAuthorized: true,
+                login: "",
+                plane_password: "",
+                token: action.token,
+                _id: action._id,
+            }
+        case "LOGOUT":
+            return {
+                ...state,
+                isAuthorized: false,
+                token: "",
+                _id: "",
             }
         case "CHANGE_LOGIN" :
             return {
@@ -41,10 +52,17 @@ export function setId (_id) {
         _id
     }
 }
-export function changeLoginStatus (isAuthorized){
+export function login (token, _id){
     return {
-        type: "LOGIN-LOGOFF",
-        isAuthorized
+        type: "LOGIN",
+        token,
+        _id,
+    }
+}
+
+export function logout (){
+    return {
+        type: "LOGOUT",
     }
 }
 

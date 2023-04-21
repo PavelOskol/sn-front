@@ -4,8 +4,8 @@ import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import MyPosts from "./MyPosts/MyPosts";
 import {connect, useSelector} from "react-redux";
 import {addPost, changesNewPostText, setProfile} from "../../../redux/reducers/profile";
-import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
+import api from "../../../DAL/api";
 
 
 //создаем функцию обертку, которая расширяет принемаемый класс.
@@ -23,7 +23,7 @@ import {useNavigate, useParams} from "react-router-dom";
 //Функциональная контейнерная компонента,
 //Создана для выполнения сайд эффектов, в частности: запрос на сервер при вмонтировании её в dom
 //И переадресации на логин если мы не залогинены
-//Благодаря роут обертке, "следит" за урл
+//Благодаря useParams, "следит" за урл
 function ProfileMiddleware(props) {
     let params = useParams();
     let navigate = useNavigate();
@@ -31,10 +31,10 @@ function ProfileMiddleware(props) {
     useEffect(() => {
         if (!props.isAuthorized) return navigate('/login')
         if (!params.userId) params.userId = props._id;
-        axios.get('/api/profile/' + params.userId, {headers: {"Authorization": "Bearer " + token}})
-            .then(res => {
-                if (!res) throw new Error("No request");
-                props.setProfile(res.data.entries);
+        api.getProfile(token, params.userId )
+            .then(data => {
+                if (!data.success) throw new Error("Failure");
+                props.setProfile(data.entries);
             }).catch(e => console.log(e.message));
     },[]);
 

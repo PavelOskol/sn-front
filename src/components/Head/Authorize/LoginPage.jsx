@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
-import {changeLogin, changePassword, changeLoginStatus, setId, setToken} from "../../../redux/reducers/authorized";
+import {changeLogin, changePassword, login as loginFunc} from "../../../redux/reducers/authorized";
 import {useNavigate} from "react-router-dom"
-import axios from "axios";
+import api from "../../../DAL/api";
 
 export default function LoginPage() {
     const login = useSelector(state => state.Authorized.login);
@@ -10,19 +10,22 @@ export default function LoginPage() {
     const navigate = useNavigate();
     const submitHandler = async (event) => {
         event.preventDefault();
-        await axios.post("/api/auth/login", {
+        /*await axios.post("/api/auth/login", {
             login,
             plane_password: pwd
-        }).then(res => {
-            dispatch(setToken(res.data.token));
+        })*/
+        api.login(login, pwd)
+    .then(data => {
+            if (!data.success) throw new Error("Failure")
+            dispatch(loginFunc(data.token, data._id))
+            /*dispatch(setToken(res.data.token));
             dispatch(changeLogin(""));
             dispatch(changePassword(""));
             dispatch(changeLoginStatus(true));
-            dispatch(setId(res.data._id));
+            dispatch(setId(res.data._id));*/
             navigate('/profile')
         }).catch(e => {
-           // debugger;
-            alert(e.response.data.error)
+            alert(e)
         });
     }
 

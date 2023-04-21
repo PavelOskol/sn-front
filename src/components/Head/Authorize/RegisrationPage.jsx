@@ -1,7 +1,7 @@
-import {changeLogin, changePassword, changeLoginStatus, setId, setToken} from "../../../redux/reducers/authorized";
+import {changeLogin, changePassword} from "../../../redux/reducers/authorized";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import axios from "axios";
+import api from "../../../DAL/api";
 
 export default function RegistrationPage() {
     const login = useSelector(state => state.Authorized.login);
@@ -10,19 +10,18 @@ export default function RegistrationPage() {
     const navigate = useNavigate();
     const submitHandler = async (event) => {
         event.preventDefault();
-        await axios.post("/api/auth/registration", {
-            login,
-            plane_password: pwd
-        }).then(res => {
-            dispatch(setToken(res.data.token));
-            dispatch(changeLogin(""));
-            dispatch(changePassword(""));
-            dispatch(changeLoginStatus(true));
-            dispatch(setId(res.data._id));
-            navigate('/profile')
+        api.registration(login, pwd)
+            .then(data => {
+                if (!data.success) throw new Error("Failure")
+                dispatch(login(data.token, data._id));
+                /*dispatch(setToken(data.token));
+                dispatch(changeLogin(""));
+                dispatch(changePassword(""));
+                dispatch(changeLoginStatus(true));
+                dispatch(setId(data._id));*/
+                navigate('/profile')
 
-        }).catch(e => {
-            // debugger;
+            }).catch(e => {
             alert(e.response.data.error)
         });
     }
@@ -33,7 +32,7 @@ export default function RegistrationPage() {
             <input type={"text"}
                    placeholder={"login"}
                    value={login}
-                   onChange={ e => dispatch(changeLogin(e.target.value)) }
+                   onChange={e => dispatch(changeLogin(e.target.value))}
                    name="login"
             />
             <input type={"password"}
@@ -42,7 +41,7 @@ export default function RegistrationPage() {
                    onChange={e => dispatch(changePassword(e.target.value))}
                    name="plane_password"
             />
-        <input type={"submit"} value={"Зарегаться"}/>
+            <input type={"submit"} value={"Зарегаться"}/>
         </form>
     </div>
 }
