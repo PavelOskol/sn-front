@@ -18,7 +18,10 @@ const User = ({
                   selfDescription = "И о себе ничего не указал",
                   location = {cityName: "", countryName: ""},
                   refreshFriends,
-                  token
+                  token,
+                  addFetchingFriend,
+                  delFetchingFriend,
+                  fetchingFriends,
               }) => {
 
     //берем из стэйта друзей текущего пользователя
@@ -45,6 +48,7 @@ const User = ({
     //функция делает запрос на сервак, принимает список друзей, и обновляет его в стейте
     const changeFriendStatus = async (_id, effect) => {
         let friends;
+        addFetchingFriend(_id);                     // дисэйблим кнопку- добавляем айди пользователя в стейт
         await axios.put('/api/friend_request', {
             addFriend: effect === "add",
             deleteFriend: effect === "delete",
@@ -53,6 +57,7 @@ const User = ({
             ).then(req => {
             friends = req.data.success ? req.data.me : null;
             refreshFriends(friends);                      //диспатчим обновленный список друзей в стейт
+            delFetchingFriend(_id);                  //энейблим кнопку - удаляем айди пользователя из стейта
         }).catch(e => console.log(e.message));
 
     }
@@ -60,7 +65,7 @@ const User = ({
     const MY_ID = useSelector(state => state.Authorized._id)        //узнаем айди текущего пользователя из стэйта
 
     //вешаем колбэк удаления/добавления друга на кнопку, в зависимости от текущего статуса юзера
-    const buttonClick = () => userFriendStatus === "Friend" || userFriendStatus === "Subscribed" ? changeFriendStatus(_id,"delete") : changeFriendStatus(_id,"add");
+    const buttonClick = () => userFriendStatus === "Friend" || userFriendStatus === "Subscribed" ? changeFriendStatus(_id, "delete") : changeFriendStatus(_id, "add");
     //пишем на кнопку то что она делает
     const buttonLabel = userFriendStatus === "Friend" ? "Удалить из друзей" :
         userFriendStatus === "Subscribed" ? "Отменить заявку" :
@@ -75,6 +80,7 @@ const User = ({
                 <input type="button"
                        value={buttonLabel}
                        onClick={buttonClick}
+                       disabled={fetchingFriends.includes(_id)}
                 />
                 : <></>
             }
@@ -100,7 +106,7 @@ export default function Users(props) {
     let navigate = useNavigate();
     const token = useSelector(state => state.Authorized.token);
     const isAuthorized = useSelector(state => state.Authorized.isAuthorized)
-    //при каждой отрисовки юзеров запрашиваем актуальных друзей, и обновляем их в стейт. На случай если кто то нас добавил в промежутках
+    //при каждой смене currentPage запрашиваем актуальных друзей, и обновляем их в стейт. На случай если кто то нас добавил в промежутках
     useEffect(() => {
         //если мы не авторизованы - уходим на логин
         if (!isAuthorized) return navigate('/login')
@@ -110,11 +116,13 @@ export default function Users(props) {
                 if (!res) throw new Error("No request");
                 props.refreshFriends(res.data);
             }).catch(e => console.log(e.message));
-    });
-
+    }, [props.currentPage]);
     //мапируем юзеров из стейта, превращая их в разметку
     const users = props.users.map(user => <User key={user._id}
                                                 {...user}
+                                                fetchingFriends={props.fetchingFriends}
+                                                addFetchingFriend={props.addFetchingFriend}
+                                                delFetchingFriend={props.delFetchingFriend}
                                                 refreshFriends={props.refreshFriends}
                                                 token={token}
     />)

@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import Users from "./Users";
 import React from "react";
-import {setUsers,setUsersCount,setUsersPage,setFetching} from "../../../redux/reducers/users.js"
+import {setUsers,setUsersCount,setUsersPage,setFetching,addFetchingFriend,delFetchingFriend} from "../../../redux/reducers/users.js"
 import {refreshFriends} from "../../../redux/reducers/profile";
 import api from "../../../DAL/api";
 
@@ -14,6 +14,8 @@ const MapDispatchToProps = {
     setUsersCount,
     setUsersPage,
     setFetching,
+    addFetchingFriend,
+    delFetchingFriend,
 };
 
 class UsersMiddleware extends React.Component {
