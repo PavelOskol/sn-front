@@ -1,29 +1,21 @@
-import {changeLogin, changePassword} from "../../../redux/reducers/authorized";
+import {changeLogin, changePassword, registrationExecutorThunk} from "../../../redux/reducers/authorized";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import api from "../../../DAL/api";
+import {useEffect} from "react";
 
 export default function RegistrationPage() {
     const login = useSelector(state => state.Authorized.login);
-    const pwd = useSelector(state => state.Authorized.plane_password)
+    const pwd = useSelector(state => state.Authorized.plane_password);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const loginStatus = useSelector( state => state.Authorized.isAuthorized);
+    useEffect( ()=> loginStatus ? navigate('/profile') : undefined  , [loginStatus])    //при смени логин статуса, перенаправлять на профиль
+
     const submitHandler = async (event) => {
         event.preventDefault();
-        api.registration(login, pwd)
-            .then(data => {
-                if (!data.success) throw new Error("Failure")
-                dispatch(login(data.token, data._id));
-                /*dispatch(setToken(data.token));
-                dispatch(changeLogin(""));
-                dispatch(changePassword(""));
-                dispatch(changeLoginStatus(true));
-                dispatch(setId(data._id));*/
-                navigate('/profile')
-
-            }).catch(e => {
-            alert(e.response.data.error)
-        });
+        dispatch( registrationExecutorThunk() )
     }
 
     return <div>

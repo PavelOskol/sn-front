@@ -1,32 +1,21 @@
 import {useDispatch, useSelector} from "react-redux";
-import {changeLogin, changePassword, login as loginFunc} from "../../../redux/reducers/authorized";
+import {changeLogin, changePassword, loginExecutorThunk} from "../../../redux/reducers/authorized";
 import {useNavigate} from "react-router-dom"
-import api from "../../../DAL/api";
+import {useEffect} from "react";
 
 export default function LoginPage() {
     const login = useSelector(state => state.Authorized.login);
     const pwd = useSelector(state => state.Authorized.plane_password);
+
+    const loginStatus = useSelector( state => state.Authorized.isAuthorized);
+    useEffect( ()=> loginStatus ? navigate('/profile') : undefined  , [loginStatus])    //при смени логин статуса, перенаправлять на профиль
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const submitHandler = async (event) => {
+    //при сабмите формы вызывать санку
+    const submitHandler = (event) => {
         event.preventDefault();
-        /*await axios.post("/api/auth/login", {
-            login,
-            plane_password: pwd
-        })*/
-        api.login(login, pwd)
-    .then(data => {
-            if (!data.success) throw new Error("Failure")
-            dispatch(loginFunc(data.token, data._id))
-            /*dispatch(setToken(res.data.token));
-            dispatch(changeLogin(""));
-            dispatch(changePassword(""));
-            dispatch(changeLoginStatus(true));
-            dispatch(setId(res.data._id));*/
-            navigate('/profile')
-        }).catch(e => {
-            alert(e)
-        });
+        dispatch( loginExecutorThunk() )
     }
 
     return <div>

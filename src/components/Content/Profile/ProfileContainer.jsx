@@ -2,10 +2,10 @@ import React, {useEffect} from "react";
 import s from "./Profile.module.css"
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import MyPosts from "./MyPosts/MyPosts";
-import {connect, useSelector} from "react-redux";
-import {addPost, changesNewPostText, setProfile} from "../../../redux/reducers/profile";
+import {connect} from "react-redux";
+import {addPost, changesNewPostText, loadProfileThunk} from "../../../redux/reducers/profile";
 import {useNavigate, useParams} from "react-router-dom";
-import api from "../../../DAL/api";
+
 
 
 //создаем функцию обертку, которая расширяет принемаемый класс.
@@ -21,21 +21,17 @@ import api from "../../../DAL/api";
 }*/
 
 //Функциональная контейнерная компонента,
-//Создана для выполнения сайд эффектов, в частности: запрос на сервер при вмонтировании её в dom
+//При каждой загрузке этой страницы вызывает санку загрузки профиля
 //И переадресации на логин если мы не залогинены
 //Благодаря useParams, "следит" за урл
 function ProfileMiddleware(props) {
     let params = useParams();
     let navigate = useNavigate();
-    let token = useSelector( state => state.Authorized.token);
     useEffect(() => {
         if (!props.isAuthorized) return navigate('/login')
-        if (!params.userId) params.userId = props._id;
-        api.getProfile(token, params.userId )
-            .then(data => {
-                if (!data.success) throw new Error("Failure");
-                props.setProfile(data.entries);
-            }).catch(e => console.log(e.message));
+        //вызываем санку загрузки профиля по id - из параметров ссылки
+        //или текущего пользователя
+        props.loadProfileThunk( params.userId || props._id)
     },[]);
 
     return <div className={s.content}>
@@ -53,7 +49,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     addPost,
     changesNewPostText: (e) => changesNewPostText(e.target.value),
-    setProfile
+    loadProfileThunk,
 }
 
 const ProfileContainer = connect(mapStateToProps, mapDispatchToProps)(ProfileMiddleware);

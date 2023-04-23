@@ -13,8 +13,10 @@ const DialogItem = ({id, name}) => {
 const Message = (props) => <div className={s.message}>{props.message}</div>
 
 export default function Messages({dialogs, messages, currentMessage, changeTextarea, sendMessage}) {
-    const dialogItems = dialogs.map(item => <DialogItem {...item}/>);
-    messages = messages.map(message => <Message message={message.message}/>);
+    const dialogItems = dialogs.map(item => <DialogItem key={item.id}
+                                                        {...item}/>);
+    messages = messages.map(message => <Message key={message.id}
+                                                message={message.message}/>);
     const keyPress = press => press.key === "Enter" ? sendMessage() : null;
 
     return (

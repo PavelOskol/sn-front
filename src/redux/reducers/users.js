@@ -1,3 +1,6 @@
+import api from "../../DAL/api";
+import {refreshFriends} from "./profile";
+
 export default function usersReducer(state ={
     users: [],
     currentPage: 1,
@@ -40,6 +43,36 @@ export default function usersReducer(state ={
             return state;
     }
 };
+
+export function setPageThunk(pageNumber) {
+    return (dispatch, getState) => {
+        dispatch(setFetching());
+        api.getUsers(pageNumber, getState().Authorized.token )
+            .then(data => {
+                    dispatch(setUsersPage(pageNumber) );
+                    dispatch(setUsersCount(data.count) );
+                    dispatch(setUsers(data.entries) );
+                    dispatch(setFetching() );
+                }
+            )
+    }
+}
+
+export function changeFriendStatusThunk (friend_id, effect) {
+    return (dispatch, getState) => {
+
+        let friends;
+        dispatch( addFetchingFriend(friend_id) );                     // дисэйблим кнопку- добавляем айди пользователя в стейт
+        api.changeFriendStatus(getState().Authorized.token, friend_id, {type: effect})
+            .then(data => {
+            if (!data.success) throw new Error('Failure')
+            friends = data.me;
+            dispatch( refreshFriends(friends) );                      //диспатчим обновленный список друзей в стейт
+            dispatch( delFetchingFriend(friend_id) );                  //энейблим кнопку - удаляем айди пользователя из стейта
+        }).catch(e => console.log(e.message));
+    }
+
+}
 
 export function setUsers(users) {
     return {type: "SET-USERS", users}

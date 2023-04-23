@@ -1,3 +1,5 @@
+import api from "../../DAL/api";
+
 const profileReducer = (state = {
     _posts: [
         {_id: 1, message:"Хм, а пропсы реально круты"},
@@ -5,7 +7,10 @@ const profileReducer = (state = {
         {_id: 3, message:"Хэлоу ворлд"}
     ],
     _currentPost: "",
-    profile: {},
+    profile: {
+        incoming_friend_requests: [],
+        outgoing_friend_requests:[],
+    },
 }, action) => {
     switch (action.type) {
         case "SET-PROFILE":
@@ -34,6 +39,26 @@ const profileReducer = (state = {
             }
         default:
             return state;
+    }
+}
+
+export function loadProfileThunk(id) {
+    return (dispatch, getState) => {
+        api.getProfile(getState().Authorized.token, id)
+            .then(data => {
+                if (!data.success) throw new Error("Failure");
+                dispatch( setProfile(data.entries) );
+            }).catch(e => console.log(e.message));
+    }
+}
+
+export function refreshFriendsThunk() {
+    return (dispatch, getState) => {
+        api.getFriends(getState().Authorized.token)
+            .then(data => {
+                if (!data) throw new Error("No request");
+                dispatch(refreshFriends(data));
+            }).catch(e => console.log(e.message));
     }
 }
 

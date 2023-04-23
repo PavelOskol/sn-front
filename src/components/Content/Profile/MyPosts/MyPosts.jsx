@@ -2,9 +2,12 @@ import s from "./MyPosts.module.css"
 import Post from "./Post/Post";
 
 
-
-
-export default function MyPosts({_posts,addPost,changesNewPostText,_currentPost}) {
+export default function MyPosts({
+                                    _posts,
+                                    addPost,
+                                    changesNewPostText,
+                                    _currentPost
+                                }) {
     _posts = _posts.map(post => <Post key={post._id} message={post.message}/>);
     const keyPress = (e) => e.key === 'Enter' && e.shiftKey ? addPost() : null;
 

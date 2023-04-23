@@ -6,9 +6,9 @@ const dialogsReducer = (state = {
         {id: "4", name: "Vasya"},
     ],
     _messages:[
-        {message:"Hi"},
-        {message:"World"},
-        {message:"I'm here"},
+        {id: "1", message:"Hi"},
+        {id: "2", message:"World"},
+        {id: "3", message:"I'm here"},
     ],
     _currentText: "",
 }, action) => {
@@ -39,6 +39,14 @@ const dialogsReducer = (state = {
             break; */
         default:
             return state;
+    }
+};
+
+export function sendMessage() { return { type: "SEND-MESSAGE" } }
+export function changesNewMessage(text) {
+    return {
+        type: "CHANGES-NEW-MESSAGE",
+        text,
     }
 }
 

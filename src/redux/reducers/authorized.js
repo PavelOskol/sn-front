@@ -1,3 +1,6 @@
+import api from "../../DAL/api";
+
+
 const authorizedReducer = (state = {
     isAuthorized: false,
     login: "",
@@ -43,6 +46,32 @@ const authorizedReducer = (state = {
                 _id: action._id
             }
         default: return state;
+    }
+}
+
+export function loginExecutorThunk () {
+    return (dispatch, getState) => {
+        api.login(getState().Authorized.login, getState().Authorized.plane_password)
+            .then(data => {
+                if (!data.success) throw new Error("Failure");
+                dispatch(login(data.token, data._id));
+                return "success"
+            }).catch(e => {
+                e.response.data.error ? alert( e.response.data.error ) : console.log("Unknown error")
+            console.log(e);
+        });
+    }
+}
+export function registrationExecutorThunk () {
+    return (dispatch, getState) => {
+        api.registration(getState().Authorized.login, getState().Authorized.plane_password)
+            .then(data => {
+                if (!data.success) throw new Error("Failure");
+                dispatch(login(data.token, data._id));
+                return "success"
+            }).catch(e => {
+                alert(e.response.data.error);
+        });
     }
 }
 

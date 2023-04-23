@@ -1,25 +1,6 @@
-import {actionCreators} from "../../../redux/action-creator";
+import {sendMessage,changesNewMessage} from "../../../redux/reducers/dialogs";
 import Messages from "./Messages";
 import {connect} from "react-redux";
-
-
-/*
-export default function MessagesContainer() {
-
-       const dispatch = useContext(StoreContext).dispatch
-       const DialogsPage = useContext(StoreContext).getState().DialogsPage;
-       const sendMessage = () => dispatch( actionCreators.sendMessage() ); // or (message = refOnTextarea.current.value);
-       const changeTextarea = (element) => dispatch( actionCreators.changesNewMessage(element.target.value) );
-       const currentMessage = () => DialogsPage._currentText;
-
-
-
-       return <Messages {...{dialogs:DialogsPage._dialogItems,
-                               messages: DialogsPage._messages,
-                               sendMessage,
-                               changeTextarea,
-                               currentMessage} } />
-   };*/
 
     const mapStateToProps = (state) => (
         {
@@ -31,8 +12,8 @@ export default function MessagesContainer() {
 
     const mapDispatchToProps = (dispatch) => (
         {
-            sendMessage: () => dispatch( actionCreators.sendMessage() ),
-            changeTextarea: (element) => dispatch( actionCreators.changesNewMessage(element.target.value) ),
+            sendMessage: () => dispatch( sendMessage() ),
+            changeTextarea: (element) => dispatch( changesNewMessage(element.target.value) ),
         }
     )
 
