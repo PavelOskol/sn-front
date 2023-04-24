@@ -6,6 +6,7 @@ import {
     changeFriendStatusThunk
 } from "../../../redux/reducers/users.js"
 import {refreshFriendsThunk} from "../../../redux/reducers/profile";
+import withAuthRedirect from "../../hoc/withAuthRedirect";
 
 
 
@@ -27,6 +28,6 @@ class UsersMiddleware extends React.Component {
     }
 }
 
-const UsersContainer = connect(MapStateToProps, MapDispatchToProps)(UsersMiddleware);
+const UsersContainer =  withAuthRedirect( connect(MapStateToProps, MapDispatchToProps)(UsersMiddleware) );
 
 export default UsersContainer;

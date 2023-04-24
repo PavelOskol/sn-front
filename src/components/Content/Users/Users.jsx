@@ -1,6 +1,6 @@
 import s from "./Users.module.css"
 import Loading from "../../common/Loading";
-import {NavLink, useNavigate} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import {useEffect} from "react";
 import {useSelector} from "react-redux";
 
@@ -41,9 +41,6 @@ const User = ({
         }
     }
 
-    //узнаем айди текущего пользователя из стэйта
-    const MY_ID = useSelector(state => state.Authorized._id)
-
     //вешаем колбэк на кнопку, который вызывает санку удаления/добавления друга,
     //в зависимости от текущего статуса "друга"
     const buttonClick = () => userFriendStatus === "Friend" || userFriendStatus === "Subscribed"
@@ -56,10 +53,13 @@ const User = ({
         userFriendStatus === "Follower" ? "Принять заявку" :
         userFriendStatus === "Stranger" ? "Добавить в друзья": "error: unknown status"
 
+    //узнаем айди текущего пользователя из стэйта
+    const MY_ID = useSelector(state => state.Authorized._id)
+
     //рисуем это дерьмо
     return <div className={s.user}>
         <div className={s.ava}>
-            {/*не ресуем кнопку если юзер это текущий пользователь*/}
+            {/*не ресуем кнопку если "друг" это текущий пользователь*/}
             {_id !== MY_ID ?
                 <input type="button"
                        value={buttonLabel}
@@ -86,15 +86,8 @@ const User = ({
 
 
 export default function Users(props) {
-
-    let navigate = useNavigate();
-    const isAuthorized = useSelector(state => state.Authorized.isAuthorized)
-
     //при каждой смене currentPage запрашиваем актуальных друзей, и обновляем их в стейт. На случай если кто то нас добавил в промежутках
     useEffect(() => {
-        //если мы не авторизованы - уходим на логин
-        if (!isAuthorized) return navigate('/login')
-
         //вызываем Санку обновления списка друзей
         props.refreshFriendsThunk();
     }, [props.currentPage]);

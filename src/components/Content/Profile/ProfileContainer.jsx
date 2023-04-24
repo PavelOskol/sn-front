@@ -4,7 +4,8 @@ import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import MyPosts from "./MyPosts/MyPosts";
 import {connect} from "react-redux";
 import {addPost, changesNewPostText, loadProfileThunk} from "../../../redux/reducers/profile";
-import {useNavigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
+import withAuthRedirect from "../../hoc/withAuthRedirect";
 
 
 
@@ -26,9 +27,7 @@ import {useNavigate, useParams} from "react-router-dom";
 //Благодаря useParams, "следит" за урл
 function ProfileMiddleware(props) {
     let params = useParams();
-    let navigate = useNavigate();
     useEffect(() => {
-        if (!props.isAuthorized) return navigate('/login')
         //вызываем санку загрузки профиля по id - из параметров ссылки
         //или текущего пользователя
         props.loadProfileThunk( params.userId || props._id)
@@ -52,5 +51,5 @@ const mapDispatchToProps = {
     loadProfileThunk,
 }
 
-const ProfileContainer = connect(mapStateToProps, mapDispatchToProps)(ProfileMiddleware);
+const ProfileContainer = withAuthRedirect( connect(mapStateToProps, mapDispatchToProps)(ProfileMiddleware) );
 export default ProfileContainer;
