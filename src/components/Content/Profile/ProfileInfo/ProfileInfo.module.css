@@ -13,3 +13,12 @@
 .ProfileBlock {
     font-style: italic;
 }
+
+.Status {
+
+    cursor: pointer;
+}
+
+.Status:hover {
+    color: #f8d5ad;
+}

@@ -1,4 +1,5 @@
 import s from "./ProfileInfo.module.css"
+import ProfileStatus from "./ProfileStatus";
 
 export default function ProfileInfo({
                                         _id,
@@ -16,6 +17,7 @@ export default function ProfileInfo({
             </div>
             <div className={s.ProfileBlock}>
                 <h1> {`${login} ${name} ${surname}`} </h1>
+                <ProfileStatus />
                 <p> {"Self description: " + selfDescription} </p>
                 <div> {`Страна: ${location.countryName}  Город: ${location.cityName}`} </div>
             </div>
