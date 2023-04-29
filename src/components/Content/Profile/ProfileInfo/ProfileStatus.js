@@ -1,22 +1,40 @@
 import s from "./ProfileInfo.module.css"
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {changeStatus} from "../../../../redux/reducers/profile";
 
-export default function ProfileStatus() {
+export default function ProfileStatus({_id}) {
     const [statusCondition, statusToggle] = useState(true);
-    const switcher = () => statusToggle(condition => !condition)
+    const dispatch = useDispatch();
+    const currentUserId = useSelector( state => state.Authorized._id)
+    const typingOn = () => {
+        if (_id === currentUserId) {
+            statusToggle(() => false)
+        }
+    }
+    const typingOff = () => {
+        if (localStatus !== globalStatus) {
+            dispatch(changeStatus(localStatus))
+        }
+        statusToggle(() => true)
+    }
 
-    const [status, changeStatus] = useState( "Ваш статус");
-    const typing = (e) => changeStatus( () => e.target.value)
+    const globalStatus = useSelector( state => state.ProfilePage.profile.status);
+    useEffect( () => changeLocalStatus( globalStatus), [globalStatus] );
+
+    const [localStatus, changeLocalStatus] = useState( globalStatus);
+
+    const typing = (e) => changeLocalStatus( () => e.target.value)
     const pressEnter = (e) => e.key === "Enter" ? e.target.blur() : null;
     return <>
         {statusCondition ?
-            <span onClick={ switcher }
-                  className={s.Status} >{status}</span>
+            <span onClick = {typingOn}
+                  className={s.Status} >{localStatus}</span>
             :
             <input type='text'
-                   value={status}
+                   value={localStatus}
                    onFocus={ e => e.target.select() }
-                   onBlur={switcher}
+                   onBlur={typingOff}
                    autoFocus={true}
                    onChange={ typing }
                    onKeyDown={pressEnter}

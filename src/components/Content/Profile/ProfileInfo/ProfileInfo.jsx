@@ -17,7 +17,7 @@ export default function ProfileInfo({
             </div>
             <div className={s.ProfileBlock}>
                 <h1> {`${login} ${name} ${surname}`} </h1>
-                <ProfileStatus />
+                <ProfileStatus _id={_id}/>
                 <p> {"Self description: " + selfDescription} </p>
                 <div> {`Страна: ${location.countryName}  Город: ${location.cityName}`} </div>
             </div>

@@ -54,6 +54,13 @@ const api = {
             {headers: {"Authorization": "Bearer " + token}}        )
             .then(req => req.data);
     },
+    changeProfileStatus(token, status) {
+        return instance.put('profile/change_status',
+            {status},
+            {headers: {"Authorization": "Bearer " + token}}
+        )
+            .then(req => req.data);
+    }
 
 }
 

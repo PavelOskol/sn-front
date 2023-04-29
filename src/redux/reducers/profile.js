@@ -37,6 +37,14 @@ const profileReducer = (state = {
                 ...state,
                 _currentPost: action.text,
             }
+        case "CHANGE-STATUS":
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    status: action.status
+                }
+            }
         default:
             return state;
     }
@@ -48,6 +56,16 @@ export function loadProfileThunk(id) {
             .then(data => {
                 if (!data.success) throw new Error("Failure");
                 dispatch( setProfile(data.entries) );
+            }).catch(e => console.log(e.message));
+    }
+}
+
+export function changeStatus(status) {
+    return (dispatch, getState) => {
+        api.changeProfileStatus(getState().Authorized.token, status)
+            .then(data => {
+                if (!data.success) throw new Error("Failure");
+                dispatch( {type: "CHANGE-STATUS", status} )
             }).catch(e => console.log(e.message));
     }
 }
