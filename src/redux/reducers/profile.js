@@ -60,12 +60,13 @@ export function loadProfileThunk(id) {
     }
 }
 
-export function changeStatus(status) {
+export function changeStatusThunk(status) {
     return (dispatch, getState) => {
         api.changeProfileStatus(getState().Authorized.token, status)
             .then(data => {
                 if (!data.success) throw new Error("Failure");
-                dispatch( {type: "CHANGE-STATUS", status} )
+                dispatch( {type: "CHANGE-STATUS", status} );
+                return "success"
             }).catch(e => console.log(e.message));
     }
 }

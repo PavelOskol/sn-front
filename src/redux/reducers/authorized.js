@@ -3,8 +3,6 @@ import api from "../../DAL/api";
 
 const authorizedReducer = (state = {
     isAuthorized: false,
-    login: "",
-    plane_password: "",
     token: "",
     _id: ""
 }, action) => {
@@ -13,8 +11,6 @@ const authorizedReducer = (state = {
             return {
                 ...state,
                 isAuthorized: true,
-                login: "",
-                plane_password: "",
                 token: action.token,
                 _id: action._id,
             }
@@ -24,16 +20,6 @@ const authorizedReducer = (state = {
                 isAuthorized: false,
                 token: "",
                 _id: "",
-            }
-        case "CHANGE_LOGIN" :
-            return {
-                ...state,
-                login: action.login
-            }
-        case "CHANGE_PASSWORD":
-            return {
-                ...state,
-                plane_password: action.plane_password
             }
         case "SET-TOKEN":
             return {
@@ -49,9 +35,9 @@ const authorizedReducer = (state = {
     }
 }
 
-export function loginExecutorThunk () {
-    return (dispatch, getState) => {
-        api.login(getState().Authorized.login, getState().Authorized.plane_password)
+export function loginExecutorThunk (lgn, pwd) {
+    return (dispatch) => {
+        api.login(lgn, pwd)
             .then(data => {
                 if (!data.success) throw new Error("Failure");
                 dispatch(login(data.token, data._id));
@@ -62,9 +48,9 @@ export function loginExecutorThunk () {
         });
     }
 }
-export function registrationExecutorThunk () {
-    return (dispatch, getState) => {
-        api.registration(getState().Authorized.login, getState().Authorized.plane_password)
+export function registrationExecutorThunk (lgn, pwd) {
+    return (dispatch) => {
+        api.registration(lgn, pwd)
             .then(data => {
                 if (!data.success) throw new Error("Failure");
                 dispatch(login(data.token, data._id));
@@ -95,18 +81,6 @@ export function logout (){
     }
 }
 
-export function changeLogin (login) {
-    return {
-        type: "CHANGE_LOGIN",
-        login
-    }
-}
-export function changePassword (plane_password) {
-    return {
-        type: "CHANGE_PASSWORD",
-        plane_password
-    }
-}
 
 export function setToken(token) {
     return {

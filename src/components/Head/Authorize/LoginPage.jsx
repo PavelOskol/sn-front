@@ -1,11 +1,14 @@
 import {useDispatch, useSelector} from "react-redux";
-import {changeLogin, changePassword, loginExecutorThunk} from "../../../redux/reducers/authorized";
+import {loginExecutorThunk} from "../../../redux/reducers/authorized";
 import {useNavigate} from "react-router-dom"
 import {useEffect} from "react";
+import {Field, Form} from "react-final-form";
+import {
+    loginValidator,
+    passwordValidator,
+} from "../../../redux/validators/validators";
 
 export default function LoginPage() {
-    const login = useSelector(state => state.Authorized.login);
-    const pwd = useSelector(state => state.Authorized.plane_password);
 
     const loginStatus = useSelector( state => state.Authorized.isAuthorized);
     useEffect( ()=> loginStatus ? navigate('/profile') : undefined  , [loginStatus])    //при смени логин статуса, перенаправлять на профиль
@@ -13,29 +16,42 @@ export default function LoginPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     //при сабмите формы вызывать санку
-    const submitHandler = (event) => {
-        event.preventDefault();
-        dispatch( loginExecutorThunk() )
+    const submitHandler = async (values) => {
+        dispatch( loginExecutorThunk(values.login, values.plane_password) )
     }
 
     return <div>
+        <Form onSubmit={submitHandler}
+                render={({ handleSubmit, submitting})=> (
         <form
-              onSubmit={submitHandler}
+              onSubmit={handleSubmit}
         >
             <h1> Логинизация</h1>
-            <input type={"text"}
-                   placeholder={"login"}
-                   value={login}
-                   onChange={ e => dispatch(changeLogin(e.target.value)) }
-                   name="login"
-            />
-            <input type={"password"}
-                   placeholder={"password"}
-                   value={pwd}
-                   onChange={e => dispatch(changePassword(e.target.value))}
-                   name="plane_password"
-            />
-            <input type={"submit"} value={"Залогиниться"}/>
+            <Field name="login"
+                   validate={loginValidator}
+            >
+                {({ input, meta }) => (
+                <div>
+                    <input {...input} type="text" placeholder="login" />
+                    {meta.error && meta.touched && <span>{meta.error}</span>}
+                </div>
+                )}
+            </Field>
+            <Field name={"plane_password"}
+                    validate={passwordValidator}
+            >
+                {({input, meta})=>(
+                    <div>
+                <input {...input} type="password" placeholder={"password"} />
+                {meta.error && meta.touched && <span>{meta.error}</span>}
+                    </div>
+            )}
+            </Field>
+
+            <input type={"submit"} value={"Залогиниться"} disabled={submitting}/>
         </form>
+
+                )}
+        />
     </div>
 }

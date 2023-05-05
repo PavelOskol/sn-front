@@ -1,7 +1,7 @@
 import s from "./ProfileInfo.module.css"
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {changeStatus} from "../../../../redux/reducers/profile";
+import {changeStatusThunk} from "../../../../redux/reducers/profile";
 
 export default function ProfileStatus({_id}) {
     const [statusCondition, statusToggle] = useState(true);
@@ -12,24 +12,26 @@ export default function ProfileStatus({_id}) {
             statusToggle(() => false)
         }
     }
-    const typingOff = () => {
+    const typingOff = async () => {
         if (localStatus !== globalStatus) {
-            dispatch(changeStatus(localStatus))
+            dispatch(changeStatusThunk(localStatus))
+            //todo status load holder
+            statusToggle(() => true)
         }
-        statusToggle(() => true)
+
     }
 
     const globalStatus = useSelector( state => state.ProfilePage.profile.status);
     useEffect( () => changeLocalStatus( globalStatus), [globalStatus] );
 
-    const [localStatus, changeLocalStatus] = useState( globalStatus);
+    const [localStatus, changeLocalStatus] = useState(globalStatus);
 
     const typing = (e) => changeLocalStatus( () => e.target.value)
     const pressEnter = (e) => e.key === "Enter" ? e.target.blur() : null;
     return <>
         {statusCondition ?
             <span onClick = {typingOn}
-                  className={s.Status} >{localStatus}</span>
+                  className={s.Status} >{localStatus || "(Статус)"}</span>
             :
             <input type='text'
                    value={localStatus}
