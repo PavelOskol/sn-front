@@ -9,6 +9,9 @@ export default function LogoutPage() {
 
     useEffect(()=> {
         dispatch(logout());
+        //дропаем в сторедже "текущую сессию"
+        localStorage.removeItem("token");
+        localStorage.removeItem("_id");
         navigate('/login');
     })
 }

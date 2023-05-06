@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import {Field, Form} from "react-final-form";
+import s from "../../../redux/validators/validators.module.css"
 
 
 export default function RegistrationPage() {
@@ -47,15 +48,15 @@ export default function RegistrationPage() {
             <h1>Регистрация</h1>
             <Field name="login" >
                 {({input, meta})=>(
-                    <div>
-                        <input {...input} type={"text"} placeholder={"login"}/>
+                    <div className={meta.error && meta.touched ? s.error : ""} >
+                        <input {...input} type={"text"} placeholder={"login"} />
                         {meta.error && meta.touched && <span>{meta.error}</span>}
                     </div>
                 )}
             </Field>
             <Field name="plane_password" >
                 {({input, meta})=>(
-                    <div>
+                    <div className={meta.error && meta.touched ? s.error : ""}>
                         <input {...input} type="password" placeholder="Password" />
                         {meta.error && meta.touched && <span>{meta.error}</span>}
                     </div>
@@ -63,7 +64,7 @@ export default function RegistrationPage() {
             </Field>
             <Field name="confirm" >
                 {({ input, meta }) => (
-                    <div>
+                    <div className={meta.error && meta.touched ? s.error : ""}>
                         <input {...input} type="password" placeholder="Confirm" />
                         {meta.error && meta.touched && <span>{meta.error}</span>}
                     </div>
