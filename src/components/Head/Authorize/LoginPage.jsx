@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {loginExecutorThunk} from "../../../redux/reducers/authorized";
+import {loginExecutorThunk, setError} from "../../../redux/reducers/authorized";
 import {useNavigate} from "react-router-dom"
 import {useEffect} from "react";
 import {Field, Form} from "react-final-form";
@@ -14,6 +14,7 @@ export default function LoginPage() {
     const loginStatus = useSelector(state => state.Authorized.isAuthorized);
     useEffect(() => loginStatus ? navigate('/profile') : undefined, [loginStatus])    //при смени логин статуса, перенаправлять на профиль
 
+    const submitError = useSelector(state => state.Authorized.authorizedError)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     //при сабмите формы вызывать санку
@@ -23,6 +24,7 @@ export default function LoginPage() {
 
     return <div>
         <Form onSubmit={submitHandler}
+              name={"Authorized"}
               render={({handleSubmit, submitting}) => (
                   <form
                       onSubmit={handleSubmit}
@@ -33,7 +35,10 @@ export default function LoginPage() {
                       >
                           {({input, meta}) => (
                               <div className={meta.error && meta.touched ? s.error : ""}>
-                                  <input {...input} type="text" placeholder="login"/>
+                                  <input {...input}
+                                         type="text"
+                                         placeholder="login"
+                                         onChange={(e)=>{input.onChange(e); dispatch(setError(""))} } />
                                   {meta.error && meta.touched && <span>{meta.error}</span>}
                               </div>
                           )}
@@ -43,7 +48,10 @@ export default function LoginPage() {
                       >
                           {({input, meta}) => (
                               <div className={meta.error && meta.touched ? s.error : ""}>
-                                  <input {...input} type="password" placeholder={"password"}/>
+                                  <input {...input}
+                                         type="password"
+                                         placeholder={"password"}
+                                         onChange={(e)=>{input.onChange(e); dispatch(setError(""))} }/>
                                   {meta.error && meta.touched && <span>{meta.error}</span>}
                               </div>
                           )}
@@ -55,6 +63,7 @@ export default function LoginPage() {
                           />
                           Запомнить меня
                       </label>
+                      {submitError && <div className={s.error}> <span> {submitError} </span> </div> }
                       <div>
                           <input type={"submit"} value={"Залогиниться"} disabled={submitting}/>
                       </div>

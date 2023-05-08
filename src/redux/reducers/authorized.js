@@ -1,12 +1,19 @@
 import api from "../../DAL/api";
 
 
+
 const authorizedReducer = (state = {
     isAuthorized: false,
+    authorizedError: "",
     token: "",
     _id: ""
 }, action) => {
     switch (action.type) {
+        case "SET-ERROR":
+            return {
+                ...state,
+                authorizedError: action.error
+            }
         case "LOGIN":
             return {
                 ...state,
@@ -41,15 +48,17 @@ export function loginExecutorThunk (lgn, pwd, remember) {
             .then(data => {
                 if (!data.success) throw new Error("Failure");
                 dispatch(login(data.token, data._id));
-                //сохраняем в локаол сторэдж, если чекнули запомнить пользователя
+                //сохраняем в локал сторэдж, если чекнули запомнить пользователя
                 if (remember) {
                     localStorage._id = data._id;
                     localStorage.token = data.token;
                 }
                 return "success"
             }).catch(e => {
-                e.response.data.error ? alert( e.response.data.error ) : console.log("Unknown error")
-            console.log(e);
+                return e.response.data.error ?
+                    dispatch( setError(e.response.data.error) )
+                    :
+                    dispatch(  setError("Unknown error") )
         });
     }
 }
@@ -66,6 +75,14 @@ export function registrationExecutorThunk (lgn, pwd) {
     }
 }
 
+//Костыль для передачи ошибки из DAL в форму
+//(не разобрался как stopSubmit'ить в final form)
+export function setError (error) {
+    return {
+        type:"SET-ERROR",
+        error
+    }
+}
 export function setId (_id) {
     return {
         type: "SET-ID",
