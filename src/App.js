@@ -10,9 +10,24 @@ import UsersContainer from "./components/Content/Users/UsersContainer";
 import LoginPage from "./components/Head/Authorize/LoginPage";
 import RegistrationPage from "./components/Head/Authorize/RegisrationPage";
 import LogoutPage from "./components/Head/Authorize/LogoutPage";
+import {login} from "./redux/reducers/authorized";
+import {useDispatch} from "react-redux";
+import {useLayoutEffect} from "react";
 
 
 function App() {
+    const dispatch = useDispatch();
+    useLayoutEffect(()=> {
+        const _id = localStorage.getItem("_id");
+        const token = localStorage.getItem("token");
+        //проверяем есть ли сохранение в локал сторэдже залогиненого пользователя
+        if (_id && token) {
+            //если да то - автологинимся
+            dispatch(login(token, _id));
+        }
+    },[]
+)
+
     return (
         <BrowserRouter>
             <div className="App">

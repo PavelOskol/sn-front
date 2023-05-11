@@ -8,6 +8,7 @@ const profileReducer = (state = {
     ],
     _currentPost: "",
     profile: {
+        isFetching: false,
         incoming_friend_requests: [],
         outgoing_friend_requests:[],
     },
@@ -45,6 +46,14 @@ const profileReducer = (state = {
                     status: action.status
                 }
             }
+        case "TOGGLE-PROFILE-FETCHING":
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    isFetching: !state.profile.isFetching
+                }
+            }
         default:
             return state;
     }
@@ -52,11 +61,16 @@ const profileReducer = (state = {
 
 export function loadProfileThunk(id) {
     return (dispatch, getState) => {
+        dispatch( switchProfileFetchingStatus() );
         api.getProfile(getState().Authorized.token, id)
             .then(data => {
                 if (!data.success) throw new Error("Failure");
                 dispatch( setProfile(data.entries) );
-            }).catch(e => console.log(e.message));
+                dispatch( switchProfileFetchingStatus() );
+            }).catch(e => {
+            console.log(e.message)
+            dispatch( switchProfileFetchingStatus() );
+        });
     }
 }
 
@@ -79,6 +93,10 @@ export function refreshFriendsThunk() {
                 dispatch(refreshFriends(data));
             }).catch(e => console.log(e.message));
     }
+}
+
+function switchProfileFetchingStatus () {
+    return {type: "TOGGLE-PROFILE-FETCHING"}
 }
 
 export function addPost() {
